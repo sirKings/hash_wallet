@@ -3533,11 +3533,6 @@ cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-crypto-js@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.1.1.tgz#9e485bcf03521041bd85844786b83fb7619736cf"
-  integrity sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==
-
 css-select@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/css-select/-/css-select-5.1.0.tgz#b8ebd6554c3637ccc76688804ad3f6a6fdaea8a6"
@@ -6991,6 +6986,11 @@ react-native-awesome-alerts@^2.0.0:
   dependencies:
     prop-types "^15.7.2"
 
+react-native-bg-thread@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-bg-thread/-/react-native-bg-thread-1.2.0.tgz#371ce0824202c85ce9b549d00bae0ec2e00a825c"
+  integrity sha512-gKRDs8VmJsMjbTdwY25UFJrOflOjmNIXhkZSgx6+BMVGSuquNQ4DmkrkaX/oi1914Crp04jpo0cbG6YI2t5HZg==
+
 react-native-codegen@^0.71.5:
   version "0.71.5"
   resolved "https://registry.yarnpkg.com/react-native-codegen/-/react-native-codegen-0.71.5.tgz#454a42a891cd4ca5fc436440d301044dc1349c14"
@@ -7355,6 +7355,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
+
+rn-crypto-js@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/rn-crypto-js/-/rn-crypto-js-1.1.0.tgz#d44d1d371d9e0c13d4290db2cfac8d11b49d288b"
+  integrity sha512-Fg8qLrlCMf5+rdLbC3UrkPqi0KEdAASFuHBos1qLeK2Juhfb66nuQPpPCRrmDodzQXQo4WMp1Trxr87H3BJv5w==
 
 run-parallel@^1.1.9:
   version "1.2.0"

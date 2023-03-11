@@ -1,3 +1,6 @@
+//@ts-ignore
+import CryptoJS from 'rn-crypto-js';
+
 export class CryptoHelper {
   encryptKey = (privateKey: string, pin: string): string => {
     // Encrypt

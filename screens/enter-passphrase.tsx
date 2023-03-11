@@ -1,5 +1,6 @@
 import {
   Alert,
+  InteractionManager,
   Modal,
   SafeAreaView,
   StatusBar,
@@ -12,6 +13,8 @@ import PrimaryButton from '../components/primary-button';
 import {useEffect, useState} from 'react';
 // @ts-ignore
 import PincodeInput from 'react-native-pincode-input';
+// @ts-ignore
+import RnBgTask from 'react-native-bg-thread';
 import theme from '../constants/theme';
 import {AppRoutes} from '../constants/routes';
 import {Web3Helper} from '../web3/web-three-helper';
@@ -19,6 +22,8 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import 'react-native-get-random-values';
 import '@ethersproject/shims';
 import {ethers} from 'ethers';
+import {CryptoHelper} from '../crypt/crypto-helper';
+import {StorageHelper} from '../storage/storage-helper';
 
 export default function EnterPassphrase({navigation}: any) {
   const [text, onChangeText] = useState('');
@@ -28,6 +33,7 @@ export default function EnterPassphrase({navigation}: any) {
   const [showProgress, setShowProgress] = useState(false);
   const [error, setError] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
+  const [wallet, setWallet] = useState('');
 
   const showToast = (msg: string) => {
     setAlertTitle('Error');
@@ -44,8 +50,6 @@ export default function EnterPassphrase({navigation}: any) {
   };
 
   const submit = async () => {
-    //navigation.navigate(AppRoutes.MAIN)
-
     if (text.length == 0) {
       showToast('Please enter your seed phrase');
       return;
@@ -62,14 +66,41 @@ export default function EnterPassphrase({navigation}: any) {
 
     const helper = new Web3Helper();
 
-    const address = helper
-      .getWalletFromSeedPhrase(phrase)
-      .then(res => {
-        showToast('Correct ' + res);
-      })
-      .catch(error => {
-        showToast('' + error);
-      });
+    RnBgTask.runInBackground_withPriority('MIN', () => {
+      // Your Javascript code here
+      // Javascript executed here runs on the passed thread priority which in this case is minimum.
+      const address = helper
+        .getWalletFromSeedPhrase(phrase)
+        .then(res => {
+          getPinAndEncryptAddress(res);
+        })
+        .catch(error => {
+          showToast('' + error);
+        });
+    });
+  };
+
+  const getPinAndEncryptAddress = (wallet: string) => {
+    hideAlert();
+    setWallet(wallet);
+    InteractionManager.runAfterInteractions(() => {
+      setModalVisible(true);
+    });
+  };
+
+  const encryptAddress = async () => {
+    const cryptoHelper = new CryptoHelper();
+    const cipher = cryptoHelper.encryptKey(wallet, pin);
+    const storageHelper = new StorageHelper();
+    const saved = await storageHelper.saveEncryptedPrivateKey(cipher);
+    const savedAddress = await storageHelper.savePublicAddress(
+      wallet.split('*')[0],
+    );
+    console.log('Moving to next screen', wallet);
+    InteractionManager.runAfterInteractions(() => {
+      setModalVisible(false);
+      navigation.navigate(AppRoutes.MAIN);
+    });
   };
 
   const hideAlert = () => {
@@ -111,7 +142,12 @@ export default function EnterPassphrase({navigation}: any) {
                   backgroundColor: theme.Colors.primary,
                 }}
                 pin={pin}
-                onTextChange={onPinChange}
+                onTextChange={(pin: string) => {
+                  onPinChange(pin);
+                  if (pin.length == 4) {
+                    encryptAddress();
+                  }
+                }}
               />
             </View>
           </View>

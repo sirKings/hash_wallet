@@ -5,9 +5,16 @@ import '@ethersproject/shims';
 import {ethers} from 'ethers';
 
 export class Web3Helper {
+  /**
+   *
+   * @param phrase seed phrase of the wallet
+   * @returns wallet address and private key seperated by *
+   */
+
   getWalletFromSeedPhrase = async (phrase: string): Promise<string> => {
     const wallet = ethers.Wallet.fromMnemonic(phrase);
-    return wallet.getAddress();
+    const address = await wallet.getAddress();
+    return address + '*' + wallet.privateKey;
   };
 
   getBalanceFromAddress = async (address: string): Promise<string> => {
