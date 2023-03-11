@@ -64,19 +64,20 @@ export default function EnterPassphrase({navigation}: any) {
 
     showProgressAlert();
 
-    const helper = new Web3Helper();
-
-    RnBgTask.runInBackground_withPriority('MIN', () => {
-      // Your Javascript code here
-      // Javascript executed here runs on the passed thread priority which in this case is minimum.
-      const address = helper
-        .getWalletFromSeedPhrase(phrase)
-        .then(res => {
-          getPinAndEncryptAddress(res);
-        })
-        .catch(error => {
-          showToast('' + error);
-        });
+    InteractionManager.runAfterInteractions(() => {
+      RnBgTask.runInBackground_withPriority('MIN', () => {
+        // Your Javascript code here
+        // Javascript executed here runs on the passed thread priority which in this case is minimum.
+        const helper = new Web3Helper();
+        const address = helper
+          .getWalletFromSeedPhrase(phrase)
+          .then(res => {
+            getPinAndEncryptAddress(res);
+          })
+          .catch(error => {
+            showToast('' + error);
+          });
+      });
     });
   };
 

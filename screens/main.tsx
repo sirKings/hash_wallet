@@ -1,4 +1,5 @@
 import {
+  Clipboard,
   Pressable,
   SafeAreaView,
   StatusBar,
@@ -26,8 +27,8 @@ export default function Main({navigation}: any) {
   const [error, setError] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
 
-  const showToast = (msg: string) => {
-    setAlertTitle('Error');
+  const showToast = (msg: string, title: string = 'Error') => {
+    setAlertTitle(title);
     setError(msg);
     setShowProgress(false);
     setShowAlert(true);
@@ -90,7 +91,12 @@ export default function Main({navigation}: any) {
         <View style={styles.addressBox}>
           <Text>{address}</Text>
         </View>
-        <Pressable style={styles.pressable}>
+        <Pressable
+          style={styles.pressable}
+          onPress={() => {
+            Clipboard.setString(address);
+            showToast('Address copied to clipboard', 'Copied');
+          }}>
           {({pressed}) => (
             <FontAwesomeIcon
               icon={faCopy}
@@ -103,7 +109,10 @@ export default function Main({navigation}: any) {
       </View>
       <PrimaryOutlineButton
         title={'Log out'}
-        onPressed={() => navigation.navigate(AppRoutes.HOME)}
+        onPressed={() => {
+          new StorageHelper().clear();
+          navigation.navigate(AppRoutes.HOME);
+        }}
       />
       <StatusBar />
     </SafeAreaView>

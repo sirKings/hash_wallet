@@ -22,5 +22,6 @@ export class StorageHelper {
 
   clear = async () => {
     await AsyncStorage.removeItem(this.PRIVATE_KEY);
+    await AsyncStorage.removeItem(this.PUBLIC_ADDRESS);
   };
 }
