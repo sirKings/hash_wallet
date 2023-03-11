@@ -93,9 +93,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.awesomeproject"
+    namespace "org.reactjs.native.example.AwesomeProject"
     defaultConfig {
-        applicationId "com.awesomeproject"
+        applicationId "org.reactjs.native.example.AwesomeProject"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
