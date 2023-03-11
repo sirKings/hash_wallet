@@ -1,6 +1,7 @@
 import {
   Alert,
   InteractionManager,
+  Keyboard,
   Modal,
   SafeAreaView,
   StatusBar,
@@ -172,12 +173,12 @@ export default function EnterPassphrase({navigation}: any) {
           error.
         </Text>
         <TextInput
-          multiline={true}
           numberOfLines={8}
           style={styles.input}
           onChangeText={onChangeText}
           value={text}
           placeholder={'Type here'}
+          onSubmitEditing={event => Keyboard.dismiss}
         />
       </View>
       <PrimaryButton title={'Continue'} onPressed={submit} />
